@@ -1,0 +1,42 @@
+#include<cstdio>
+#include<cstring>
+using namespace std;
+int v,e,G[210][210],x,y,d[210],vis[210];
+void dfs(int u){
+    vis[u]=1;
+       for(int i=0;i<v;i++)
+         if(G[u][i]&&!vis[i])
+            dfs(i);
+    return;
+}
+int main()
+{
+   while(scanf("%d%d",&v,&e)==2){
+        bool flag=true;
+         memset(G,0,sizeof(G));
+         memset(d,0,sizeof(d));
+         memset(vis,0,sizeof(vis));
+         for(int i=0;i<e;i++){
+            scanf("%d%d",&x,&y);
+            G[x][y]=G[y][x]=1;
+            d[x]++;d[y]++;
+         }
+         int num=0;
+         for(int i=0;i<v;i++)
+            if(d[i]&1) num++;
+         if(num) flag=false;
+         if(flag){
+            int j;
+            for(j=0;j<v;j++)
+               if(d[j]) break;
+            dfs(j);
+            for(int i=0;i<v;i++)
+               if(!vis[i]) {flag=false;break;}
+         }
+         if(flag)
+            printf("Possible\n");
+         else
+            printf("Not Possible\n");
+    }
+    return 0;
+}

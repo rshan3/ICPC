@@ -1,0 +1,43 @@
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+using namespace std;
+char G[35][85];
+int ti,tj;
+int r;
+
+
+void init(){
+	for(r=0;r<35;r++){
+		cin.getline(G[r],85);
+		if(G[r][0]=='_') return;
+		for(int j=0;G[r][j]!='\0';j++)
+			{if(G[r][j]=='*') {ti=r;tj=j;break;}}
+			}
+	
+
+		}
+
+void dfs(int i,int j){
+
+		G[i][j]='#';
+		if(G[i+1][j]==' ') dfs(i+1,j);
+		if(G[i][j+1]==' ') dfs(i,j+1);
+		if(G[i-1][j]==' ') dfs(i-1,j);
+		if(G[i][j-1]==' ') dfs(i,j-1);
+	}
+
+int main(){
+		freopen("in.txt","r",stdin);
+		int n;
+	        
+		cin >> n;
+		while(n--){
+		getchar();
+		init();
+		dfs(ti,tj);
+		for(int i=0;i<=r;i++)
+		{cout << G[i];cout << endl;}
+				}
+
+	return 0;}

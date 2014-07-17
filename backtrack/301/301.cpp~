@@ -1,0 +1,42 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+using namespace std;
+int n,m,order,maxe;
+int b[25];
+int e[25];
+int p[25];
+int board[10];
+bool check(int k){
+	for(int i=b[k];i<e[k];i++){
+		board[i]+=p[k];
+		if(board[i]>n) return false;	
+		}
+	return true;
+}
+
+void search(int cur,int earn){
+	if(cur==order){if(earn>maxe) maxe=earn;}
+	else{	int tmp[10];
+		memcpy(tmp,board,sizeof(board));
+		search(cur+1,earn);
+		if(check(cur)){search(cur+1,earn+p[cur]*(e[cur]-b[cur]));memcpy(board,tmp,sizeof(tmp));}
+		
+		
+	}	
+
+}
+
+int main(){
+	freopen("in.txt","r",stdin);
+	while(cin >> n >> m >> order){
+		if(n==0&&m==0&&order==0) break;
+		for(int i=0;i<order;i++){
+			cin >> b[i] >> e[i] >> p[i];		
+	}
+	memset(board,0,sizeof(0));	
+	maxe=0;
+	search(0,0);
+	cout << maxe << endl;
+		}
+	return 0;}

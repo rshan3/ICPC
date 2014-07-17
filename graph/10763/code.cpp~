@@ -1,0 +1,50 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <vector>
+#include <string>
+#include <map>
+#include <algorithm>
+using namespace std;
+int n;
+
+
+struct mypair{
+	int real;
+	int s,e;
+	bool operator < (const mypair & other) const {
+
+		if(s!=other.s) return s<other.s;
+		else return e<other.e;
+			}
+}a[500005];
+
+int main(){
+	freopen("in.txt","r",stdin);
+	while(cin >> n && n){
+		if(n%2){cout << "NO" << endl; continue;}
+		int ta,tb;
+		for(int i=0;i<n;i++) {
+			cin >> ta >> tb;
+			if(ta<tb) {a[i].s=ta;a[i].e=tb;a[i].real=1;}
+			else {a[i].s=tb;a[i].e=ta;a[i].real=-1;}
+				}
+		sort(a,a+n);
+		int lasts=a[0].s;int laste=a[0].e;int cnt=a[0].real;
+		int i=1;
+		for(;i<n;i++){
+
+			if(a[i].s==lasts&&a[i].e==laste){cnt+=a[i].real;}
+			else {
+
+				if(cnt!=0) {cout << "NO" << endl; break;}
+				cnt=a[i].real;lasts=a[i].s;laste=a[i].e;			}
+			}
+		if(i==n)
+		cout << "YES" << endl;
+}	
+
+		
+	
+
+	return 0;}
