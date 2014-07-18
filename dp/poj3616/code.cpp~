@@ -1,0 +1,47 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+int n,m,r;
+int d[1005];
+
+struct interval{
+
+	int s,e,q;
+}itv[1005];
+
+
+void dp(){
+
+	for(int i=m;i>=1;i--){
+		d[i]=itv[i].q;
+		for(int j=i+1;j<=m;j++){
+			if(itv[j].s>=itv[i].e+r)
+			d[i]=max(d[i],d[j]+itv[i].q);
+			else
+			d[i]=max(d[j],d[i]);
+				}
+		
+			}
+		
+}
+
+bool cmp(const interval & a,const interval & b){
+
+	return a.s<b.s;
+	
+	}
+
+int main(){
+	freopen("in.txt","r",stdin);
+	while(scanf("%d%d%d",&n,&m,&r)==3){
+
+		for(int i=1;i<=m;i++) scanf("%d%d%d",&itv[i].s,&itv[i].e,&itv[i].q);
+		sort(itv+1,itv+1+m,cmp);
+		dp();
+		printf("%d\n",d[1]);
+		
+	}
+
+	return 0;}
