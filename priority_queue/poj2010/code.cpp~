@@ -1,0 +1,64 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+#include <queue>
+using namespace std;
+int n,c,f,k,sumright,sumleft;
+int prev[100005];
+int post[100005];
+
+struct cow{
+	int sat;int fee;
+	
+	
+}cows[100005];
+
+bool cmp(const cow & a,const cow & b){
+		return a.sat<b.sat;
+	}
+
+int main(){
+		freopen("in.txt","r",stdin);
+	while(scanf("%d%d%d",&n,&c,&f)==3){
+		for(int i=0;i<c;i++){scanf("%d%d",&cows[i].sat,&cows[i].fee);}
+	
+		sort(cows,cows+c,cmp);
+		sumright=0;sumleft=0;k=(n-1)/2;
+		priority_queue<int> right;
+		priority_queue<int> left;
+		for(int i=c-k;i<c;i++) {sumright+=cows[i].fee;right.push(cows[i].fee);}
+		for(int i=0;i<k;i++) {sumleft+=cows[i].fee;left.push(cows[i].fee);}
+
+
+		for(int i=k;i<=c-k-1;i++){
+			prev[i]=sumleft;
+			left.push(cows[i].fee);
+			sumleft+=cows[i].fee;
+			sumleft-=left.top();
+			left.pop();
+			
+			}
+
+		for(int i=c-1-k;i>=k;i--){
+			post[i]=sumright;
+			right.push(cows[i].fee);
+			sumright+=cows[i].fee;
+			sumright-=right.top();
+			right.pop();
+			
+			}
+		int i;
+		
+		for(i=c-1-k;i>=k;i--){
+			if(post[i]+prev[i]+cows[i].fee<=f) {break;}
+			
+			
+		}
+		
+		if(i<k) printf("-1\n");
+		else printf("%d\n",cows[i].sat);
+
+		}
+
+	return 0;}
