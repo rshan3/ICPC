@@ -1,0 +1,83 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <queue>
+#include <algorithm>
+#define INF 1e9
+#define MAXN 1<<21
+using namespace std;
+
+int d[MAXN];
+char s1[25];
+int jb[105][2];
+int jt[105][2];
+char s2[25];
+int w[105];
+int bit,pn,start,dest;
+int use[MAXN];
+
+
+
+void dijakstra(){
+	start=(1<<bit)-1;
+	priority_queue<int,vector<int>,greater<int> > que;
+	
+	memset(use,0,sizeof(int)*(start+5));
+
+	d[start]=0;
+	que.push(start);	
+
+	while(!que.empty()){
+		int k=que.top();que.pop();
+		
+		if(use[k]==1) continue;
+		use[k]=1;
+		
+		for(int i=0;i<pn;i++){
+			if(  (k==(k|jb[i][0])) && (k== (k& (start-jb[i][1]))  ) ){
+				dest=(k|jt[i][0]);
+				dest=(dest&(start-jt[i][1]));
+				if(d[k]+w[i]<d[dest]){
+						d[dest]=d[k]+w[i];
+						que.push(dest);}
+				}
+			}
+
+		
+		
+		}
+	
+	}
+
+
+int main(){
+	freopen("in.txt","r",stdin);
+	int ks=0;
+	while(cin >> bit >> pn){
+		if(bit==0 && pn==0) break;
+		for(int i=0;i<pn;i++){
+			cin >> w[i];
+			
+			
+			cin >> s1 >> s2;
+			jb[i][0]=0;jb[i][1]=0;jt[i][0]=0;jt[i][1]=0;
+			for(int j=0;j<bit;j++){
+				
+				if(s1[bit-1-j]=='+'){jb[i][0]|=(1<<j);}
+				if(s1[bit-1-j]=='-'){jb[i][1]|=(1<<j);}
+				if(s2[bit-1-j]=='+'){jt[i][0]|=(1<<j);}
+				if(s2[bit-1-j]=='-'){jt[i][1]|=(1<<j);}
+				}
+			
+				}
+		
+
+	for(int i=0;i< (1<<bit);i++) d[i]=INF;
+	dijakstra();
+	cout << "Product " << ++ks << endl;
+	if(d[0]!=INF) {printf("Fastest sequence takes %d seconds.\n",d[0]);}
+	else printf("Bugs cannot be fixed.\n");
+	cout << endl;
+}
+	return 0;
+}

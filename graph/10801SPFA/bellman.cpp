@@ -1,0 +1,90 @@
+#include <iostream>
+#include <cstdio>
+#include <sstream>
+#include <vector>
+#include <cstring>
+#include <algorithm>
+#define INF 1e9
+using namespace std;
+int d[500];
+char s[1000];
+int t[5];
+int n,m,k,prev,cur;
+
+struct edge{
+	int a,b;int w;
+
+}es[3000];
+
+void spfa(){
+	
+	
+	while(true){
+
+		bool update=false;
+		for(int i=0;i<m;i++){
+			edge e=es[i];
+			if( d[e.a]!=INF && d[e.a]+e.w<d[e.b]){
+				update=true;
+				d[e.b]=d[e.a]+e.w;
+				}
+				}
+		if(!update) break;
+	}
+
+}
+
+
+int main(){
+	freopen("in.txt","r",stdin);
+	
+	while(cin >> n >> k){
+		vector<int> transit[100];
+		for(int i=0;i<n;i++){cin >> t[i];}
+		m=0;
+		getchar();
+		for(int i=0;i<n;i++){
+			cin.getline(s,sizeof(s));
+			stringstream stm(s);
+	
+			stm >> prev;
+			transit[prev].push_back(i);
+			while(stm >> cur){
+				transit[cur].push_back(i);
+				es[m].a=i*100+prev;
+				es[m].b=i*100+cur;
+				es[m].w=(cur-prev)*t[i];
+				m++;es[m].a=i*100+cur;
+				es[m].b=i*100+prev;
+				es[m].w=(cur-prev)*t[i];
+				m++;prev=cur;
+			} 
+				}
+
+		for(int i=1;i<100;i++){
+			if(transit[i].size()>1){
+				for(int j=0;j<transit[i].size();j++){
+					for(int k=j+1;k<transit[i].size();k++){
+							es[m].a=transit[i][j]*100+i;es[m].b=transit[i][k]*100+i;es[m].w=60;m++;
+							es[m].a=transit[i][k]*100+i;es[m].b=transit[i][j]*100+i;es[m].w=60;m++;
+							
+							}
+					}
+				}
+			}
+		for(int i=0;i<500;i++) {d[i]=INF;}
+		for(int i=0;i<transit[0].size();i++){d[100*transit[0][i]]=0; }
+		spfa();
+
+		int mini=INF;
+		for(int i=0;i<5;i++){
+			mini=min(d[k+i*100],mini);
+			}
+		if(mini!=INF) cout << mini;
+		else cout << "IMPOSSIBLE";
+		cout << endl;
+		
+	}
+
+
+	return 0;}
