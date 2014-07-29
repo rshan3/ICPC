@@ -1,0 +1,86 @@
+#include <iostream>
+#include <vector>
+#include <cstdio>
+
+using namespace std;
+int n,m,cnt;
+int pri[100005];
+int a[100005];
+int sa[100005];
+int has[100005];
+int add;
+int G[100005][100];
+
+
+int dfs(int cur){
+	
+	pri[cur]=++cnt;
+	has[cur]=1;
+	a[cur]=1;
+	for(int i=0;G[cur][i]!=0;i++){
+		a[cur]+=dfs(G[cur][i]);
+		
+	}
+	return a[cur];
+
+}
+
+int query(int cur,int k){
+
+	if(pri[cur]==k) return a[cur];
+	int i;	
+	for(i=0;G[cur][i]!=0;i++){
+		if(k<pri[G[cur][i]]) break;	
+		}
+	i--;
+	return query(G[cur][i],k);
+}
+
+void upd(int cur,int k){
+	
+	if(pri[cur]==k)  {add=(has[cur]==0);has[cur]=1-has[cur];a[cur]+=(add==1)?1:-1;return;}
+	
+	int i;	
+	for(i=0;G[cur][i]!=0;i++){
+		if(k<pri[G[cur][i]]) break;	
+		}
+	i--;
+	upd(G[cur][i],k);
+	if(add) a[cur]++;
+	else a[cur]--;
+}
+
+int main(){
+	freopen("in.txt","r",stdin);
+	while(scanf("%d",&n)==1){
+		int a,b;
+		for(int i=0;i<n-1;i++){
+
+		scanf("%d%d",&a,&b);
+		G[a][sa[a]++]=b;
+	}
+		cnt=0;
+		dfs(1);
+
+		int k;char op;
+		scanf("%d",&m);getchar();
+		for(int i=0;i<m;i++){
+			scanf("%c",&op);
+			scanf("%d",&k);getchar();
+			if(op=='Q'){
+				k=pri[k];
+				int ans=query(1,k);
+				printf("%d\n",ans);
+					}
+			if(op=='C'){
+				k=pri[k];
+				add=1;
+				upd(1,k);
+				}	
+		}
+
+		
+	
+}
+
+	return 0;}
