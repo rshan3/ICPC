@@ -1,0 +1,52 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <cmath>
+#include <algorithm>
+
+using namespace std;
+int n,k;
+int w[100005],v[100005];
+
+struct jew{
+	double a;int idx;
+	
+}t[100005];
+
+bool cmp(const jew & i,const jew & j){
+
+	return i.a>j.a;
+}
+
+bool C(double r){
+
+	for(int i=0;i<n;i++){t[i].a=v[i]-w[i]*r;t[i].idx=i+1;}
+	sort(t,t+n,cmp);
+	double sum=0;
+	for(int i=0;i<k;i++)
+		sum+=t[i].a;
+	return sum>-1e-9;
+	}
+
+
+int main(){
+	freopen("in.txt","r",stdin);
+	scanf("%d%d",&n,&k);
+
+	for(int i=0;i<n;i++) scanf("%d%d",v+i,w+i);
+	
+
+	double lo=-0.1;double hi=10000001;double last,mid;
+
+	while((hi-lo)>1e-9){
+		mid=(lo+hi)/2;
+		if(C(mid)){lo=mid;last=mid;}
+		else {hi=mid;}
+		
+		}
+	
+	for(int i=0;i<k-1;i++) printf("%d ",t[i].idx);
+	printf("%d\n",t[k-1].idx);
+	
+	
+}
