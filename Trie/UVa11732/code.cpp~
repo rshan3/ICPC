@@ -1,0 +1,63 @@
+#include <iostream>
+#include <cstring>
+#include <cstdio>
+#include <cctype>
+
+using namespace std;
+char sp[1001];
+long long ans;
+int n,ncnt;
+
+struct node{
+	int num;
+	node* next[70];
+	void init(){
+		memset(next,0,sizeof(next));
+		num=0;
+		}
+}tr[4000005];
+node* root=tr;
+
+void insert(char* s){
+	int idx;
+	node* p =root;
+	int len=strlen(s);
+	for(int i=0;i<=len;i++){
+		if(s[i]=='\0') idx=0;
+		else if(isdigit(s[i])){idx=s[i]-'0'+1;}
+		else{ if(s[i]>='a' && s[i]<='z') idx=s[i]-'a'+11;
+			else idx=s[i]-'A'+37;
+				}
+
+		if(p->next[idx]==NULL){
+			tr[ncnt].init();
+			p->next[idx]=tr+ncnt;
+			ncnt++;	
+			ans+=p->num;		}
+		else {
+			ans+=2*(p->num);
+	}
+		(p->num)++;
+		p=p->next[idx];
+	
+		}
+	
+}
+
+int main(){
+	freopen("in.txt","r",stdin);
+	int ks=0;
+	while(cin >> n && n){
+		
+		ncnt=1;
+		root->init();
+		ans=0;
+		REP0(i,n) {
+			cin >> sp;
+			insert(sp);
+		}
+		ks++;
+		cout << "Case " << ks << ": " << ans << endl; 
+		}
+
+	return 0;}
