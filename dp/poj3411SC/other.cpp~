@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <math.h>
+#define  N 14
+#define  INF 100000000
+using namespace std ;
+
+struct point
+{
+    int b , c ;
+    int p , r ;
+    int next ;
+}d[N] ;
+
+int head[N] , vis[N] ;
+int n , m , ans ;
+
+void dfs( int x , int s )
+{
+    //结束条件
+    if ( s > ans )
+    {
+        return ;
+    }
+    if ( x == n )
+    {
+        ans = s ;
+        return ;
+    }
+    for ( int i = head[x] ; i != -1 ; i = d[i].next )
+    {
+        int v = d[i].b ;
+        if( vis[v] <= 3 )
+        {
+            vis[v]++ ;
+            if ( vis[d[i].c] > 0 )
+            dfs( v , s + d[i].p );
+            else
+            dfs( v , s + d[i].r );
+            vis[v]-- ;
+        }
+    }
+}
+
+int main()
+{
+	freopen("in.txt","r",stdin);
+    int i , j , k , x ;
+
+    scanf( "%d%d" , &n , &m ) ;
+    memset( head , -1 , sizeof( head ));
+    memset( vis , 0 , sizeof ( vis ));
+    //用邻接表存储
+    for ( i = 1 ; i <= m ; i++ )
+    {
+        scanf( "%d%d%d%d%d" , &x , &d[i].b , &d[i].c , &d[i].p , &d[i].r );
+        d[i].next = head[x] ;
+        head[x] = i ;
+    }
+    vis[1] = 1 ;
+    ans = INF ;
+    dfs( 1 , 0 );
+    if ( ans == INF )
+    printf( "impossible\n" );
+    else
+    printf ( "%d\n" , ans );
+    return 0 ;
+}
